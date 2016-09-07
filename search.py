@@ -1,17 +1,16 @@
 #!/usr/bin/python
 
 from __future__ import print_function
-
-__author__ = "gexiaowei"
-__version__ = "1.0"
-__email__ = "gandxiaowei@gmail.com"
-__status__ = "Development"
-
 import sys
 import urllib
 import requests
 from bs4 import BeautifulSoup
 from workflow import Workflow
+
+__author__ = "gexiaowei"
+__version__ = "1.0"
+__email__ = "gandxiaowei@gmail.com"
+__status__ = "Development"
 
 URL = "https://www.npmjs.com"
 path = "/search"
@@ -37,8 +36,9 @@ def npm(wf):
         description = item.find("p", class_="description").get_text()
         stars = item.find("span", class_="stars").get_text()
         version = item.find("span", class_="version").get_text()
-        wf.add_item(name=name + ' by' + author,
-                    subtitle=description + ' version:' + version,
+        wf.add_item(name + '(by ' + author + ')',
+                    subtitle=(description + ' version:' + version),
+                    valid=True,
                     arg=url)
     wf.send_feedback()
     return 0

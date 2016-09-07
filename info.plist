@@ -6,24 +6,11 @@
 	<string>com.magatama.search</string>
 	<key>connections</key>
 	<dict>
-		<key>06C9C4A9-38CE-441A-8D06-E2F2D8B39B60</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>1E77FF76-84E3-46DE-B51A-2AB6AD3F3141</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
 		<key>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>06C9C4A9-38CE-441A-8D06-E2F2D8B39B60</string>
+				<string>1E77FF76-84E3-46DE-B51A-2AB6AD3F3141</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -46,29 +33,21 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>68</integer>
-				<key>script</key>
-				<string>import sys
-
-query = "{query}"
-
-sys.stdout.write(query)</string>
-				<key>scriptargtype</key>
-				<integer>0</integer>
-				<key>scriptfile</key>
+				<key>browser</key>
 				<string></string>
-				<key>type</key>
-				<integer>3</integer>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.action.openurl</string>
 			<key>uid</key>
-			<string>06C9C4A9-38CE-441A-8D06-E2F2D8B39B60</string>
+			<string>1E77FF76-84E3-46DE-B51A-2AB6AD3F3141</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -92,9 +71,7 @@ sys.stdout.write(query)</string>
 				<key>runningsubtext</key>
 				<string>Please Wait...</string>
 				<key>script</key>
-				<string>query="{query}"
-
-echo -n $query</string>
+				<string>./search.py "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -115,41 +92,15 @@ echo -n $query</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>browser</key>
-				<string></string>
-				<key>spaces</key>
-				<string></string>
-				<key>url</key>
-				<string>{query}</string>
-				<key>utf8</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
-			<key>uid</key>
-			<string>1E77FF76-84E3-46DE-B51A-2AB6AD3F3141</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
 	<key>uidata</key>
 	<dict>
-		<key>06C9C4A9-38CE-441A-8D06-E2F2D8B39B60</key>
-		<dict>
-			<key>xpos</key>
-			<integer>430</integer>
-			<key>ypos</key>
-			<integer>160</integer>
-		</dict>
 		<key>1E77FF76-84E3-46DE-B51A-2AB6AD3F3141</key>
 		<dict>
 			<key>xpos</key>
-			<integer>690</integer>
+			<integer>440</integer>
 			<key>ypos</key>
 			<integer>160</integer>
 		</dict>
