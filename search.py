@@ -3,43 +3,40 @@
 from __future__ import print_function
 import sys
 import urllib
+import json
 import requests
-from bs4 import BeautifulSoup
 from workflow import Workflow
 
 __author__ = "gexiaowei"
-__version__ = "1.0"
+__version__ = "1.1"
 __email__ = "gandxiaowei@gmail.com"
 __status__ = "Development"
 
 URL = "https://www.npmjs.com"
+KEY = "CD06z4gVeqSXRiDL2ZNK"
 path = "/search"
 
 
 def npm(wf):
     args = wf.args
     query = urllib.quote_plus(args[0].encode('utf-8'))
-    response = requests.request("GET", URL + path, headers={}, params={"q": query, "page": 1})
-    soup = BeautifulSoup(response.text, "html.parser")
-    elements = soup.find_all("div", class_='package-details')
+    response = requests.request("GET",
+                                'https://ac.cnstrc.com/autocomplete/' + query,
+                                headers={}, params={"query": query, "autocomplete_key": KEY, "callback": "callback"})
 
-    if len(elements) == 0:
-        wf.add_item('No torrents found with this query found.')
+    result = json.loads(response.text.replace("typeof callback === 'function' && callback(", "").replace(");", ""))
+    print(len(result["sections"]["packages"]))
+    if len(result["sections"]["packages"]) == 0:
+        wf.add_item('No Packages found.')
         wf.send_feedback()
         return 0
 
-    for item in elements:
-        name_element = item.find("a", class_="name")
-        name = name_element.get_text()
-        url = URL + name_element["href"]
-        author = item.find("a", class_="author").get_text()
-        description = item.find("p", class_="description").get_text()
-        stars = item.find("span", class_="stars").get_text()
-        version = item.find("span", class_="version").get_text()
-        wf.add_item(name + '(by ' + author + ')',
-                    subtitle=(description + ' version:' + version),
+    for item in result["sections"]["packages"]:
+        print(item)
+        wf.add_item(item["value"],
+                    subtitle=item["data"]["description"],
                     valid=True,
-                    arg=url)
+                    arg=URL + item["data"]["url"])
     wf.send_feedback()
     return 0
 
