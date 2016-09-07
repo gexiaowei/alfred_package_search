@@ -25,14 +25,12 @@ def npm(wf):
                                 headers={}, params={"query": query, "autocomplete_key": KEY, "callback": "callback"})
 
     result = json.loads(response.text.replace("typeof callback === 'function' && callback(", "").replace(");", ""))
-    print(len(result["sections"]["packages"]))
     if len(result["sections"]["packages"]) == 0:
         wf.add_item('No Packages found.')
         wf.send_feedback()
         return 0
 
     for item in result["sections"]["packages"]:
-        print(item)
         wf.add_item(item["value"],
                     subtitle=item["data"]["description"],
                     valid=True,
