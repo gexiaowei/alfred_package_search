@@ -1,2 +1,2 @@
-download for v1.0
-[alfred_npm_search v1.0](https://github.com/gexiaowei/alfred_npm_search/releases/download/1.0/NPM.Search.alfredworkflow)
+download for v1.2
+[alfred_package_search v1.2](https://github.com/gexiaowei/alfred_npm_search/releases/download/1.2/Package.Search.alfredworkflow)
