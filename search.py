@@ -8,39 +8,59 @@ import requests
 from workflow import Workflow
 
 __author__ = "gexiaowei"
-__version__ = "1.1"
+__version__ = "1.2"
 __email__ = "gandxiaowei@gmail.com"
 __status__ = "Development"
 
-URL = "https://www.npmjs.com"
-KEY = "CD06z4gVeqSXRiDL2ZNK"
 path = "/search"
+NPM_URL = "https://www.npmjs.com"
 
 
-def npm(wf):
+def search(wf):
     args = wf.args
-    query = urllib.quote_plus(args[0].encode('utf-8'))
-    response = requests.request("GET",
-                                'https://ac.cnstrc.com/autocomplete/' + query,
-                                headers={}, params={"query": query, "autocomplete_key": KEY, "callback": "callback"})
+    domain = urllib.quote_plus(args[0].encode('utf-8'))
+    keyword = urllib.quote_plus(args[1].encode('utf-8'))
 
-    result = json.loads(response.text.replace("typeof callback === 'function' && callback(", "").replace(");", ""))
-    if len(result["sections"]["packages"]) == 0:
+    result = []
+
+    if domain == "bower":
+        result = bower(keyword)
+    elif domain == "npm":
+        result = npm(keyword)
+
+    if len(result) == 0:
         wf.add_item('No Packages found.')
         wf.send_feedback()
         return 0
 
-    for item in result["sections"]["packages"]:
-        wf.add_item(item["value"],
-                    subtitle=item["data"]["description"],
+    for item in result:
+        wf.add_item(item["name"],
+                    subtitle=item["subtitle"],
                     valid=True,
-                    arg=URL + item["data"]["url"])
+                    arg=item["url"])
     wf.send_feedback()
     return 0
 
 
+def bower(keywords):
+    response = requests.request("GET",
+                                'https://libraries.io/api/bower-search',
+                                headers={}, params={"q": keywords})
+    result = json.loads(response.text)
+    return map(lambda item: dict(name=item["name"], subtitle=item["description"], url=item["homepage"] or item["repository_url"]), result)
+
+
+def npm(keywords):
+    key = "CD06z4gVeqSXRiDL2ZNK"
+    response = requests.request("GET",
+                                'https://ac.cnstrc.com/autocomplete/' + keywords,
+                                headers={}, params={"query": keywords, "autocomplete_key": key, "callback": "callback"})
+    result = json.loads(response.text.replace("typeof callback === 'function' && callback(", "").replace(");", ""))
+    return map(lambda item: dict(name=item["value"], subtitle=item["data"]["description"], url=NPM_URL + item["data"]["url"]), result["sections"]["packages"])
+
+
 def main(wf):
-    npm(wf)
+    search(wf)
 
 
 if __name__ == u"__main__":
