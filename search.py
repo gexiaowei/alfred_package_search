@@ -27,6 +27,8 @@ def search(wf):
         result = bower(keyword)
     elif domain == "npm":
         result = npm(keyword)
+    elif domain == "passport":
+        result = passport(keyword)
 
     if len(result) == 0:
         wf.add_item('No Packages found.')
@@ -57,6 +59,14 @@ def npm(keywords):
                                 headers={}, params={"query": keywords, "autocomplete_key": key, "callback": "callback"})
     result = json.loads(response.text.replace("typeof callback === 'function' && callback(", "").replace(");", ""))
     return map(lambda item: dict(name=item["value"], subtitle=item["data"]["description"], url=NPM_URL + item["data"]["url"]), result["sections"]["packages"])
+
+
+def passport(keywords):
+    response = requests.request('GET', 'http://passportjs.org/data.json')
+    result = json.loads(response.text)
+    before = filter(lambda item: item['label'].index(keywords) != -1, result)
+    after = map(lambda item: dict(name=item['label'], subtitle=item['desc'], url=item['url']), before)
+    return after
 
 
 def main(wf):
