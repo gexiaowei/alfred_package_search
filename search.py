@@ -5,6 +5,7 @@ import sys
 import urllib
 import json
 import requests
+import requests_cache
 from workflow import Workflow
 
 __author__ = "gexiaowei"
@@ -14,6 +15,8 @@ __status__ = "Development"
 
 path = "/search"
 NPM_URL = "https://www.npmjs.com"
+
+requests_cache.install_cache('packages')
 
 
 def search(wf):
@@ -68,7 +71,6 @@ def passport(keywords):
     after = map(lambda item: dict(name=item['label'], subtitle=item['desc'], url=item['url']), before)
     return after
 
-passport('token')
 
 def main(wf):
     search(wf)
