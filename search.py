@@ -64,10 +64,11 @@ def npm(keywords):
 def passport(keywords):
     response = requests.request('GET', 'http://passportjs.org/data.json')
     result = json.loads(response.text)
-    before = filter(lambda item: item['label'].index(keywords) != -1, result)
+    before = filter(lambda item: item['label'].find(keywords) != -1, result)
     after = map(lambda item: dict(name=item['label'], subtitle=item['desc'], url=item['url']), before)
     return after
 
+passport('token')
 
 def main(wf):
     search(wf)
