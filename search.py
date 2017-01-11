@@ -15,7 +15,7 @@ __status__ = "Development"
 
 requests_cache.install_cache('packages')
 
-base = {
+path = {
     bower: 'https://libraries.io/api/bower-search',
     npm: 'https://ac.cnstrc.com/autocomplete/{0}',
     passport: 'http://passportjs.org/data.json',
@@ -54,7 +54,7 @@ def search(wf):
 
 def bower(keywords):
     response = requests.request("GET",
-                                base['bower'],
+                                path['bower'],
                                 headers={}, params={"q": keywords})
     result = json.loads(response.text)
     return map(lambda item: dict(name=item["name"], subtitle=item["description"], url=item["homepage"] or item["repository_url"]), result)
@@ -64,7 +64,7 @@ def npm(keywords):
     key = "CD06z4gVeqSXRiDL2ZNK"
     home = "https://www.npmjs.com"
     response = requests.request("GET",
-                                base['npm'].format(keywords),
+                                path['npm'].format(keywords),
                                 headers={}, params={"query": keywords, "autocomplete_key": key, "callback": "callback"})
     result = json.loads(response.text.replace(
         "typeof callback === 'function' && callback(", "").replace(");", ""))
@@ -75,7 +75,7 @@ def npm(keywords):
 
 
 def yeoman(keywords):
-    response = requests.request('GET', base['yeoman'])
+    response = requests.request('GET', path['yeoman'])
     result = json.loads(response.text)
     before = filter(lambda item: item['name'].find(keywords) != -1, result)
     after = map(lambda item: dict(name=item['name'], subtitle=item[
@@ -84,7 +84,7 @@ def yeoman(keywords):
 
 
 def passport(keywords):
-    response = requests.request('GET', base['passport'])
+    response = requests.request('GET', path['passport'])
     result = json.loads(response.text)
     before = filter(lambda item: item['label'].find(keywords) != -1, result)
     after = map(lambda item: dict(name=item['label'], subtitle=item[
