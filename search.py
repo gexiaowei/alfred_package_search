@@ -9,7 +9,7 @@ import requests_cache
 from workflow import Workflow
 
 __author__ = "gexiaowei"
-__version__ = "1.3"
+__version__ = "1.4"
 __email__ = "gandxiaowei@gmail.com"
 __status__ = "Development"
 
