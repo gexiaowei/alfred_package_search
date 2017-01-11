@@ -76,7 +76,7 @@ def npm(keywords):
 
 def yeoman(keywords):
     response = requests.request('GET', base['yeoman'])
-        result = json.loads(response.text)
+    result = json.loads(response.text)
     before = filter(lambda item: item['name'].find(keywords) != -1, result)
     after = map(lambda item: dict(name=item['name'], subtitle=item[
                 'description'], url=item['site']), before)
