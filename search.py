@@ -16,10 +16,10 @@ __status__ = "Development"
 requests_cache.install_cache('packages')
 
 path = {
-    bower: 'https://libraries.io/api/bower-search',
-    npm: 'https://ac.cnstrc.com/autocomplete/{0}',
-    passport: 'http://passportjs.org/data.json',
-    yeoman: 'https://cdn.rawgit.com/yeoman/yeoman-generator-list/a8e5052236d77f0e0f1a6e453e81b3718f2fa270/cache.json'
+    'bower': 'https://libraries.io/api/bower-search',
+    'npm': 'https://ac.cnstrc.com/autocomplete/{0}',
+    'passport': 'http://passportjs.org/data.json',
+    'yeoman': 'https://cdn.rawgit.com/yeoman/yeoman-generator-list/a8e5052236d77f0e0f1a6e453e81b3718f2fa270/cache.json'
 }
 
 
