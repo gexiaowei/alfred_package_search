@@ -118,12 +118,9 @@ def yarn(keywords):
     response = requests.request(
         "POST", path['yarn'], data=json.dumps(payload), params=query_string)
     result = json.loads(response.text)
-    if(length(result["result"]) > 0)
-        return map(lambda item: dict(name=item["name"],
-                                     subtitle=item["description"],
-                                     url=home + item["name"]), result["result"][0]['hits'])
-    else:
-        return []
+    return map(lambda item: dict(name=item["name"],
+                                 subtitle=item["description"],
+                                 url=home + item["name"]), result["result"][0]['hits'])
 
 
 def main(wf):
