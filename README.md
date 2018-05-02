@@ -10,6 +10,8 @@ trigger keywords is
 
 ```yeoman``` (for search yeoman package)
 
+```yarn``` (for search npm package)
+
 ## Download
 
 Please visit [releases page](https://github.com/gexiaowei/alfred_package_search/releases)

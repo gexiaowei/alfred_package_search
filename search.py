@@ -6,6 +6,7 @@ import urllib
 import json
 import requests
 import requests_cache
+import urllib2
 from workflow import Workflow
 
 __author__ = "gexiaowei"
@@ -19,7 +20,8 @@ path = {
     'bower': 'https://libraries.io/api/bower-search',
     'npm': 'https://ac.cnstrc.com/autocomplete/{0}',
     'passport': 'http://passportjs.org/data.json',
-    'yeoman': 'https://cdn.rawgit.com/yeoman/yeoman-generator-list/a8e5052236d77f0e0f1a6e453e81b3718f2fa270/cache.json'
+    'yeoman': 'https://cdn.rawgit.com/yeoman/yeoman-generator-list/a8e5052236d77f0e0f1a6e453e81b3718f2fa270/cache.json',
+    'yarn': 'https://ofcncog2cu-2.algolianet.com/1/indexes/*/queries'
 }
 
 
@@ -90,6 +92,38 @@ def passport(keywords):
     after = map(lambda item: dict(name=item['label'], subtitle=item[
                 'desc'], url=item['url']), before)
     return after
+
+
+def yarn(keywords):
+    home = 'https://yarnpkg.com/zh-Hans/package/'
+    query_string = {
+        "x-algolia-agent": "Algolia for vanilla JavaScript (lite) 3.25.1;react-instantsearch 5.0.0;JS Helper 2.23.2",
+        "x-algolia-application-id": "OFCNCOG2CU",
+        "x-algolia-api-key": "f54e21fa3a2a0160595bb058179bfb1e"
+    }
+    base_params = {
+        'query': keywords,
+        'hitsPerPage': 5,
+        'maxValuesPerFacet': 10,
+        'page': 0,
+        'attributesToRetrieve': ["deprecated", "description", "downloadsLast30Days", "repository", "homepage", "humanDownloadsLast30Days", "keywords", "license", "modified", "name", "owner", "version"],
+        'attributesToHighlight': ["name", "description", "keywords"],
+        'highlightPreTag': '<ais-highlight-0000000000>',
+        'highlightPostTag': '</ais-highlight-0000000000>',
+        'facets': ["keywords", "keywords", "owner.name"],
+        'tagFilters': ''
+    }
+    payload = {"requests": [{"indexName": "npm-search",
+                             "params": urllib.urlencode(base_params)}]}
+    response = requests.request(
+        "POST", path['yarn'], data=json.dumps(payload), params=query_string)
+    result = json.loads(response.text)
+    if(length(result["result"]) > 0)
+        return map(lambda item: dict(name=item["name"],
+                                     subtitle=item["description"],
+                                     url=home + item["name"]), result["result"][0]['hits'])
+    else:
+        return []
 
 
 def main(wf):
