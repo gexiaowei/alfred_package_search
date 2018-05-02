@@ -40,6 +40,9 @@ def search(wf):
         result = passport(keyword)
     elif domain == 'yeoman':
         result = yeoman(keyword)
+    elif domain == 'yarn':
+        result = yarn(keyword)
+
     if len(result) == 0:
         wf.add_item('No Packages found.')
         wf.send_feedback()
@@ -101,31 +104,18 @@ def yarn(keywords):
         "x-algolia-application-id": "OFCNCOG2CU",
         "x-algolia-api-key": "f54e21fa3a2a0160595bb058179bfb1e"
     }
-    base_params = {
-        'query': keywords,
-        'hitsPerPage': 5,
-        'maxValuesPerFacet': 10,
-        'page': 0,
-        'attributesToRetrieve': ["deprecated", "description", "downloadsLast30Days", "repository", "homepage", "humanDownloadsLast30Days", "keywords", "license", "modified", "name", "owner", "version"],
-        'attributesToHighlight': ["name", "description", "keywords"],
-        'highlightPreTag': '<ais-highlight-0000000000>',
-        'highlightPostTag': '</ais-highlight-0000000000>',
-        'facets': ["keywords", "keywords", "owner.name"],
-        'tagFilters': ''
-    }
     payload = {"requests": [{"indexName": "npm-search",
-                             "params": urllib.urlencode(base_params)}]}
+                             "params": "query=" + keywords + "&hitsPerPage=5&maxValuesPerFacet=10&page=0&attributesToRetrieve=%5B%22deprecated%22%2C%22description%22%2C%22downloadsLast30Days%22%2C%22repository%22%2C%22homepage%22%2C%22humanDownloadsLast30Days%22%2C%22keywords%22%2C%22license%22%2C%22modified%22%2C%22name%22%2C%22owner%22%2C%22version%22%5D&attributesToHighlight=%5B%22name%22%2C%22description%22%2C%22keywords%22%5D&highlightPreTag=%3Cais-highlight%3E&highlightPostTag=%3C%2Fais-highlight%3E&facets=%5B%22keywords%22%2C%22keywords%22%2C%22owner.name%22%5D&tagFilters=&optionalFacetFilters=%5B%5B%22_searchInternal.concatenatedName%3Areact%22%5D%5D"}]}
     response = requests.request(
         "POST", path['yarn'], data=json.dumps(payload), params=query_string)
     result = json.loads(response.text)
     return map(lambda item: dict(name=item["name"],
                                  subtitle=item["description"],
-                                 url=home + item["name"]), result["result"][0]['hits'])
+                                 url=home + item["name"]), result["results"][0]['hits'])
 
 
 def main(wf):
     search(wf)
-
 
 if __name__ == u"__main__":
     wf = Workflow()
